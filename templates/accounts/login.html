@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Login | Pop-off Cebu{% endblock %}
+
+{% block content %}
+<div class="window-card form-window">
+    <div class="window-header">
+        <span>AUTH_LOGIN.EXE</span>
+        <div class="window-controls">
+            <span class="window-dot min"></span>
+            <span class="window-dot max"></span>
+            <span class="window-dot close"></span>
+        </div>
+    </div>
+    <div class="window-body">
+        <h2>Member Sign In</h2>
+        <div class="form-subtitle">Access your Pop-off Cebu account & portal</div>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="margin-top: 24px;">
+                <button type="submit" class="button primary-green full-width">Sign In</button>
+            </div>
+        </form>
+
+        <div class="form-footer">
+            No account yet? <a href="{% url 'accounts:register' %}">Create an account here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+:root {
+    --paper-bg: #f5eedb;
+    --paper-card: #fffbf2;
+    --border-ink: #1c2118;
+    --green-utb: #1c4d25;
+    --green-utb-light: #2b7438;
+    --rust-accent: #c0392b;
+    --clay-dark: #3a2318;
+    --mustard-pop: #e6a117;
+    --text-ink: #181d16;
+    --text-muted: #5e6658;
+
+    --badge-organizer: #c0392b;
+    --badge-vendor: #1c4d25;
+    --badge-performer: #b86200;
+    --badge-attendee: #205c6d;
+
+    --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --shadow-retro: 3px 3px 0px var(--border-ink);
+    --shadow-retro-lg: 5px 5px 0px var(--border-ink);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--paper-bg);
+    color: var(--text-ink);
+    font-family: var(--font-heading);
+    line-height: 1.5;
+    background-image: radial-gradient(rgba(28, 33, 24, 0.08) 1px, transparent 0);
+    background-size: 20px 20px;
+}
+
+a {
+    color: var(--green-utb);
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+a:hover {
+    color: var(--rust-accent);
+}
+
+/* Header / Windows Titlebar Bar */
+.site-header {
+    background-color: var(--paper-card);
+    border-bottom: 2px solid var(--border-ink);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+}
+
+.container {
+    width: min(1080px, calc(100% - 32px));
+    margin: 0 auto;
+}
+
+.nav {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.brand {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--text-ink);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+}
+
+.brand .badge-city {
+    background-color: var(--green-utb);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border: 1px solid var(--border-ink);
+    border-radius: 4px;
+    box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.nav-links a {
+    color: var(--text-ink);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.nav-links a:hover {
+    background-color: rgba(28, 77, 37, 0.08);
+}
+
+/* Buttons */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border-ink);
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    background-color: var(--mustard-pop);
+    color: var(--text-ink);
+    text-decoration: none;
+    box-shadow: var(--shadow-retro);
+    transition: all 0.1s ease;
+}
+
+.button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--border-ink);
+    text-decoration: none;
+    color: var(--text-ink);
+}
+
+.button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--border-ink);
+}
+
+.button.primary-green {
+    background-color: var(--green-utb);
+    color: #fff;
+}
+
+.button.primary-green:hover {
+    background-color: var(--green-utb-light);
+    color: #fff;
+}
+
+.button.secondary {
+    background-color: var(--paper-card);
+    color: var(--text-ink);
+}
+
+.button.full-width {
+    width: 100%;
+}
+
+/* Messages */
+.message {
+    padding: 12px 18px;
+    border-radius: 6px;
+    border: 2px solid var(--border-ink);
+    box-shadow: var(--shadow-retro);
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.message.success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+/* Window / Retro Card Design */
+.window-card {
+    background-color: var(--paper-card);
+    border: 2px solid var(--border-ink);
+    border-radius: 8px;
+    box-shadow: var(--shadow-retro-lg);
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.window-header {
+    background-color: var(--paper-bg);
+    border-bottom: 2px solid var(--border-ink);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.window-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.window-dot {
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--border-ink);
+    border-radius: 2px;
+    background: #e5e5e5;
+}
+
+.window-dot.close { background-color: var(--rust-accent); }
+.window-dot.min { background-color: var(--mustard-pop); }
+.window-dot.max { background-color: var(--green-utb); }
+
+.window-body {
+    padding: 24px;
+}
+
+/* Form Styles */
+.form-window {
+    max-width: 480px;
+    margin: 40px auto;
+}
+
+.form-window h2 {
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+}
+
+.form-window .form-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-family: var(--font-mono);
+}
+
+.form-window label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.form-window input[type="text"],
+.form-window input[type="password"],
+.form-window input[type="email"],
+.form-window select {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #fff;
+    border: 2px solid var(--border-ink);
+    border-radius: 4px;
+    color: var(--text-ink);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    margin-bottom: 16px;
+    box-shadow: inset 2px 2px 0 rgba(0,0,0,0.05);
+}
+
+.form-window input:focus,
+.form-window select:focus {
+    outline: none;
+    border-color: var(--green-utb);
+    box-shadow: 0 0 0 2px rgba(28, 77, 37, 0.2);
+}
+
+.form-window .helptext {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: -10px;
+    margin-bottom: 16px;
+}
+
+.form-window ul.errorlist {
+    list-style: none;
+    padding: 8px 12px;
+    background-color: #fee2e2;
+    border: 1px solid var(--rust-accent);
+    color: var(--rust-accent);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.form-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--border-ink);
+    font-size: 13px;
+    text-align: center;
+    font-family: var(--font-mono);
+}
+
+/* Badges */
+.role-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border: 1.5px solid var(--border-ink);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    box-shadow: 1.5px 1.5px 0 var(--border-ink);
+    text-transform: uppercase;
+}
+
+.role-badge.organizer { background: #fee2e2; color: var(--badge-organizer); }
+.role-badge.vendor { background: #d1fae5; color: var(--badge-vendor); }
+.role-badge.performer { background: #fef3c7; color: var(--badge-performer); }
+.role-badge.attendee { background: #e0f2fe; color: var(--badge-attendee); }
+
+/* Hero */
+.hero-stamp {
+    display: inline-block;
+    border: 2px solid var(--rust-accent);
+    color: var(--rust-accent);
+    padding: 2px 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(-1.5deg);
+    margin-bottom: 12px;
+}
+
+.hero h1 {
+    font-size: 52px;
+    line-height: 1;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    margin: 0 0 16px;
+}
+
+.hero h1 span {
+    color: var(--green-utb);
+}
+
+.hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 0 28px;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    gap: 20px;
+}
+
+.grid.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 768px) {
+    .grid.three { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+}

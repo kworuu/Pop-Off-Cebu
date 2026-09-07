@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Register | Pop-off Cebu{% endblock %}
+
+{% block content %}
+<div class="window-card form-window">
+    <div class="window-header">
+        <span>NEW_USER_REGISTRATION.EXE</span>
+        <div class="window-controls">
+            <span class="window-dot min"></span>
+            <span class="window-dot max"></span>
+            <span class="window-dot close"></span>
+        </div>
+    </div>
+    <div class="window-body">
+        <h2>Join Pop-off Cebu</h2>
+        <div class="form-subtitle">Select your participation role in Metro Cebu</div>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="margin-top: 24px;">
+                <button type="submit" class="button primary-green full-width">Complete Registration</button>
+            </div>
+        </form>
+
+        <div class="form-footer">
+            Already have an account? <a href="{% url 'accounts:login' %}">Back to Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

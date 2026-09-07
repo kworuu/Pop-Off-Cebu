@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pop-off Cebu{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" href="{% url 'home' %}">
+                POP-OFF <span>CEBU</span>
+                <span class="badge-city">EST. CEBU</span>
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Home</a>
+                {% if user.is_authenticated %}
+                    <span class="role-badge {{ user.role|lower }}">{{ user.get_role_display }}</span>
+                    <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600;">{{ user.username }}</span>
+                    <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="button secondary" style="padding: 4px 10px; font-size: 12px;">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="button primary-green" style="padding: 6px 14px; font-size: 13px;">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 30px 0 60px;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
