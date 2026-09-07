@@ -52,7 +52,32 @@ body {
         linear-gradient(180deg, var(--sky-top) 0%, #a9cced 35%, var(--sky-bottom) 100%);
     background-attachment: fixed;
     min-height: 100vh;
+    padding: 26px 0 52px;
+    position: relative;
+    overflow-x: hidden;
 }
+
+/* Desktop wallpaper clouds */
+.desktop-clouds {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.cloud {
+    position: absolute;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.95), rgba(255,255,255,0.15) 70%);
+    border-radius: 50%;
+    filter: blur(1px);
+    opacity: 0.85;
+}
+
+.cloud.c1 { width: 340px; height: 110px; top: 6%; left: -60px; }
+.cloud.c2 { width: 260px; height: 90px; top: 14%; right: -40px; }
+.cloud.c3 { width: 200px; height: 70px; bottom: 12%; left: 8%; opacity: 0.6; }
+.cloud.c4 { width: 300px; height: 100px; bottom: 18%; right: 6%; opacity: 0.55; }
 
 a {
     color: var(--titlebar-dark);
@@ -65,78 +90,343 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Header — Aero glass taskbar */
-.site-header {
-    background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(226,239,251,0.75) 60%, rgba(196,222,245,0.7) 100%);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--border-steel);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 2px 8px rgba(13, 32, 58, 0.18);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-}
-
 .container {
     width: min(1080px, calc(100% - 32px));
     margin: 0 auto;
 }
 
-.nav {
-    min-height: 64px;
+/* Browser-window frame that holds the whole site */
+.browser-frame {
+    position: relative;
+    z-index: 1;
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    background: var(--glass-white-strong);
+    border: 1px solid var(--border-steel);
+    border-radius: 10px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, var(--shadow-aero-lg);
+    overflow: hidden;
+}
+
+/* Title bar */
+.browser-titlebar {
+    background: linear-gradient(180deg, var(--titlebar-shine) 0%, var(--titlebar-light) 20%, var(--titlebar-mid) 58%, var(--titlebar-dark) 100%);
+    border-bottom: 1px solid var(--border-steel-dark);
+    padding: 8px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    position: relative;
 }
 
-.brand {
-    font-size: 19px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--titlebar-dark);
-    text-decoration: none;
+.browser-titlebar::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 45%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+    pointer-events: none;
+}
+
+.titlebar-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+    position: relative;
+    z-index: 1;
+}
+
+/* Toolbar: back / forward / refresh / address bar / search */
+.browser-toolbar {
+    background: linear-gradient(180deg, #f3f8fc 0%, #dfeaf4 100%);
+    border-bottom: 1px solid var(--border-steel);
+    padding: 8px 12px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.brand:hover {
+.nav-arrows {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.nav-arrow {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid var(--border-steel);
+    background: linear-gradient(180deg, #ffffff 0%, #dbe8f4 55%, #c1d6e9 100%);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 1px 2px rgba(13,32,58,0.25);
     color: var(--titlebar-dark);
-    text-decoration: none;
-}
-
-.brand .badge-city {
-    background: linear-gradient(180deg, var(--titlebar-light) 0%, var(--titlebar-mid) 55%, var(--titlebar-dark) 100%);
-    color: #fff;
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 3px;
-    border: 1px solid var(--border-steel-dark);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 1px 2px rgba(0,0,0,0.3);
-    letter-spacing: 0.03em;
-}
-
-.nav-links {
+    font-size: 11px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    cursor: default;
+    padding: 0;
+}
+
+.nav-arrow.refresh {
+    font-size: 13px;
+}
+
+.address-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(180deg, #ffffff 0%, #f2f7fb 100%);
+    border: 1px solid var(--border-steel);
+    border-radius: 14px;
+    padding: 5px 14px;
+    box-shadow: 0 1px 3px rgba(13,32,58,0.15) inset;
+    min-width: 0;
+}
+
+.address-icon {
+    font-size: 11px;
+    flex-shrink: 0;
+    color: var(--orb-green-3);
+}
+
+.address-text {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.toolbar-search {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border-steel);
+    background: linear-gradient(180deg, #ffffff 0%, #dbe8f4 100%);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 1px 2px rgba(13,32,58,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+/* Bookmark / tab bar */
+.bookmarks-bar {
+    background: linear-gradient(180deg, #ffffff 0%, #eef4fa 100%);
+    border-bottom: 1px solid var(--border-steel);
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 38px;
     gap: 12px;
 }
 
-.nav-links a {
-    color: var(--ink);
-    text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 5px;
+.bm-tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.nav-links a:hover {
+.bm-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.bm-tab.active {
+    background: var(--glass-white-strong);
+    border: 1px solid var(--border-steel);
+    border-bottom-color: transparent;
+    border-radius: 6px 6px 0 0;
+    margin-bottom: -1px;
+    box-shadow: 0 -1px 0 rgba(255,255,255,0.6) inset;
+}
+
+.bm-tab a {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.bm-favicon {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--orb-green-1), var(--orb-green-3));
+    border: 1px solid var(--orb-green-3);
+    display: inline-block;
+}
+
+.bm-account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bm-username {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+}
+
+.bm-link {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-heading);
+}
+
+.bm-link:hover {
     background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(190, 222, 250, 0.6));
     box-shadow: 0 0 0 1px rgba(76, 122, 171, 0.4);
     text-decoration: none;
+}
+
+.bm-link.bm-signup {
+    background: linear-gradient(180deg, var(--orb-green-1) 0%, var(--orb-green-2) 55%, var(--orb-green-3) 100%);
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.35);
+    border: 1px solid var(--orb-green-3);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 1px 3px rgba(13,32,58,0.3);
+}
+
+.bm-link.bm-signup:hover {
+    filter: brightness(1.08);
+}
+
+.bm-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+/* Page content area inside the browser window */
+.browser-viewport {
+    background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.2));
+    min-height: 50vh;
+}
+
+/* Taskbar */
+.taskbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 10px;
+    background: linear-gradient(180deg, #123a66 0%, #0d2c50 55%, #081c36 100%);
+    border-top: 1px solid #0a2445;
+    box-shadow: 0 -1px 0 rgba(255,255,255,0.08) inset, 0 -4px 14px rgba(0,0,0,0.35);
+}
+
+.start-orb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px 5px 10px;
+    border-radius: 16px;
+    background: radial-gradient(120% 160% at 30% 0%, #cdf29a 0%, var(--orb-green-2) 45%, var(--orb-green-3) 100%);
+    border: 1px solid var(--orb-green-3);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.orb-glyph {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background:
+        linear-gradient(90deg, rgba(255,255,255,0.9) 48%, transparent 48% 52%, rgba(255,255,255,0.9) 52%),
+        linear-gradient(180deg, rgba(255,255,255,0.9) 48%, transparent 48% 52%, rgba(255,255,255,0.9) 52%);
+}
+
+.orb-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    text-transform: lowercase;
+}
+
+.taskbar-sep {
+    width: 1px;
+    align-self: stretch;
+    margin: 8px 0;
+    background: rgba(255,255,255,0.15);
+}
+
+.taskbar-app {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border-radius: 5px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #dce9f7;
+}
+
+.taskbar-app.active {
+    background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset;
+    color: #fff;
+}
+
+.taskbar-app-icon {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--orb-green-1), var(--orb-green-3));
+}
+
+.taskbar-spacer {
+    flex: 1;
+}
+
+.tray {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #dce9f7;
+}
+
+.tray-icon {
+    opacity: 0.85;
+    font-size: 13px;
+}
+
+.clock {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    padding-left: 8px;
+    border-left: 1px solid rgba(255,255,255,0.2);
+}
+
+@media (max-width: 640px) {
+    .titlebar-label { display: none; }
+    .toolbar-search { display: none; }
+    .orb-label { display: none; }
+    .taskbar-app span:not(.taskbar-app-icon) { display: none; }
 }
 
 /* Buttons — glossy Aero pills */
