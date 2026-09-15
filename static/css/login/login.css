@@ -1,0 +1,23 @@
+/* Login feature — page-specific layout only.
+   Card, field, and button styling live in css/base.css. */
+
+.auth-section {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+}
+
+.auth-lead {
+    font-size: 14.5px;
+    margin-bottom: 22px;
+}
+
+.auth-switch {
+    margin: 18px 0 0;
+    font-size: 14.5px;
+}

@@ -1,0 +1,59 @@
+/* Register feature — page-specific layout.
+   Duplicates the small .auth-* layout rules from Login (each
+   feature owns its own CSS file per the vertical-slicing
+   brief), then adds the wide card and role legend that are
+   unique to registration. */
+
+.auth-section {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+}
+
+.auth-card--wide {
+    max-width: 720px;
+}
+
+.auth-lead {
+    font-size: 14.5px;
+    margin-bottom: 22px;
+}
+
+.auth-switch {
+    margin: 18px 0 0;
+    font-size: 14.5px;
+}
+
+/* role legend: static, descriptive — sits under the role field
+   so a new user understands each account type before choosing */
+
+.role-legend {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.role-legend__item {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    padding: 12px 13px;
+    background: var(--color-concrete-dim);
+}
+
+.role-legend__item p {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: var(--color-ink-soft);
+}
+
+@media (max-width: 560px) {
+    .role-legend {
+        grid-template-columns: 1fr;
+    }
+}
