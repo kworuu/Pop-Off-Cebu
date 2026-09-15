@@ -1,65 +1,89 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}Home | Pop-off Cebu{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/home/home.css' %}">{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home/home.css' %}">
+{% endblock %}
+
 {% block content %}
 <section class="hero">
-  <h1>Every weekend market, stall, and gig in Metro Cebu — in one place.</h1>
-  <p class="hero-lead">Pop-off Cebu indexes the city's artisan markets, food bazaars, and indie gigs, and walks organizers through Barangay, CCTO, City Health, and Mayor's Permit requirements before a single tent goes up.</p>
-  {% if not user.is_authenticated %}
-    <div class="actions">
-      <a class="button" href="{% url 'register:register' %}">Create an account</a>
-      <a class="button secondary" href="{% url 'login:login' %}">Log in</a>
-    </div>
-  {% endif %}
-</section>
+    <div class="hero-stamp">METRO CEBU POP-UP ENGINE</div>
+    <h1>HOME <span>SCREEN</span></h1>
+    <p>Centralizing local artisan markets, food bazaars, and community gigs across Metro Cebu. Connecting organizers, indie vendors, gig performers, and attendees.</p>
 
-{% if user.is_authenticated %}
-<section class="status-strip">
-  <div class="status-strip__who">
-    <span class="badge role-{{ user.role|lower }}">{{ user.get_role_display }}</span>
-    <span class="status-strip__name">{{ user.username }}</span>
-  </div>
-  <p class="status-strip__note">
-    {% if user.role == "ORGANIZER" %}
-      Event and permit tools are being wired up for organizers next.
-    {% elif user.role == "VENDOR" %}
-      Stall listings and compliance tracking are coming to your dashboard soon.
-    {% elif user.role == "PERFORMER" %}
-      The gig board is in progress — check back for open slots.
+    {% if user.is_authenticated %}
+        <div class="window-card" style="max-width: 600px; margin-bottom: 30px;">
+            <div class="window-header">
+                <span>SESSION_ACTIVE.EXE</span>
+                <div class="window-controls">
+                    <span class="window-dot"></span>
+                    <span class="window-dot"></span>
+                    <span class="window-dot close"></span>
+                </div>
+            </div>
+            <div class="window-body">
+                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">USER PROFILE DETECTED</div>
+                <h2 style="margin: 0 0 8px; font-size: 22px;">Maayong Pag-abot, {{ user.username }}!</h2>
+                <p style="margin: 0 0 16px; font-size: 14px; color: var(--text-muted);">
+                    You are verified in the directory as an active <strong>{{ user.get_role_display }}</strong>.
+                </p>
+                <span class="role-badge {{ user.role|lower }}">{{ user.role }} DASHBOARD ACCESS</span>
+            </div>
+        </div>
     {% else %}
-      Pop-up listings and RSVPs are coming to this page soon.
+        <div style="margin-bottom: 36px; display: flex; gap: 14px;">
+            <a href="{% url 'register:register' %}" class="button primary-green">Register Account</a>
+            <a href="{% url 'login:login' %}" class="button secondary">Existing User Login</a>
+        </div>
     {% endif %}
-  </p>
-</section>
-{% endif %}
 
-<section class="pillars">
-  <div class="grid pillars-grid">
-    <div class="stub-card">
-      <span class="stub-card__accent accent-teal"></span>
-      <h3>Browse pop-ups</h3>
-      <p>Find this weekend's markets, bazaars, and gigs around Cebu City.</p>
-      <span class="tag">Coming soon</span>
+    <div class="grid three">
+        <div class="window-card">
+            <div class="window-header">
+                <span>01 // DISCOVERY</span>
+                <div class="window-controls">
+                    <span class="window-dot"></span>
+                </div>
+            </div>
+            <div class="window-body">
+                <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Pop-up Hub</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
+                    Explore verified weekend bazaars, IT Park maker pop-ups, and indie gigs across Cebu.
+                </p>
+            </div>
+        </div>
+
+        <div class="window-card">
+            <div class="window-header">
+                <span>02 // LEGAL ENGINE</span>
+                <div class="window-controls">
+                    <span class="window-dot"></span>
+                </div>
+            </div>
+            <div class="window-body">
+                <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Permits & Clearances</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
+                    Interactive compliance roadmaps for Barangay, CCTO traffic, and City Health sanitary permits.
+                </p>
+            </div>
+        </div>
+
+        <div class="window-card">
+            <div class="window-header">
+                <span>03 // GIG BOARDS</span>
+                <div class="window-controls">
+                    <span class="window-dot"></span>
+                </div>
+            </div>
+            <div class="window-body">
+                <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Recruitment Portal</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
+                    Direct slot reservations for craft vendors, acoustic acts, DJs, setup crew, and media shooters.
+                </p>
+            </div>
+        </div>
     </div>
-    <a class="stub-card link-card" href="{% url 'register:register' %}">
-      <span class="stub-card__accent accent-orange"></span>
-      <h3>Join as a vendor</h3>
-      <p>Register a stall, then handle sanitary and booth compliance in one flow.</p>
-      <span class="tag tag-link">Register as vendor</span>
-    </a>
-    <div class="stub-card">
-      <span class="stub-card__accent accent-indigo"></span>
-      <h3>Pick up a gig</h3>
-      <p>Busking sets, photography, and setup-crew shifts posted by organizers.</p>
-      <span class="tag">Coming soon</span>
-    </div>
-    <a class="stub-card link-card" href="{% url 'register:register' %}">
-      <span class="stub-card__accent accent-ink"></span>
-      <h3>Stage an event</h3>
-      <p>Work through Barangay, CCTO, City Health, and Mayor's Permit steps.</p>
-      <span class="tag tag-link">Register as organizer</span>
-    </a>
-  </div>
 </section>
 {% endblock %}

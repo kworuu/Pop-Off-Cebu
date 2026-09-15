@@ -1,53 +1,37 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}Register | Pop-off Cebu{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/register/register.css' %}">{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register/register.css' %}">
+{% endblock %}
+
 {% block content %}
-<section class="auth-section">
-  <div class="card form-card auth-card auth-card--wide">
-    <h1>Create your account</h1>
-    <p class="auth-lead">One account covers every role on Pop-off Cebu — pick the one that fits how you'll show up.</p>
-
-    <form method="post">
-      {% csrf_token %}
-      {% if form.non_field_errors %}
-        <div class="form-alert">{{ form.non_field_errors }}</div>
-      {% endif %}
-      {% for field in form %}
-        <div class="field {% if field.name == 'role' %}field-role{% endif %}">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field }}
-          {% if field.help_text %}<p class="helptext">{{ field.help_text }}</p>{% endif %}
-          {{ field.errors }}
-
-          {% if field.name == 'role' %}
-            <div class="role-legend">
-              <div class="role-legend__item">
-                <span class="badge role-organizer">Organizer</span>
-                <p>Stage pop-ups, manage LGU permits, and book vendor stalls.</p>
-              </div>
-              <div class="role-legend__item">
-                <span class="badge role-vendor">Vendor</span>
-                <p>List a stall and handle sanitary and booth compliance.</p>
-              </div>
-              <div class="role-legend__item">
-                <span class="badge role-performer">Performer</span>
-                <p>Pick up busking sets, photography, or setup-crew gigs.</p>
-              </div>
-              <div class="role-legend__item">
-                <span class="badge role-attendee">Attendee</span>
-                <p>Browse pop-ups nearby and RSVP to the ones you like.</p>
-              </div>
-            </div>
-          {% endif %}
+<div class="window-card form-window">
+    <div class="window-header">
+        <span>NEW_USER_REGISTRATION.EXE</span>
+        <div class="window-controls">
+            <span class="window-dot min"></span>
+            <span class="window-dot max"></span>
+            <span class="window-dot close"></span>
         </div>
-      {% endfor %}
-      <div class="actions">
-        <button type="submit" class="button">Create account</button>
-      </div>
-    </form>
+    </div>
+    <div class="window-body">
+        <h2>Join Pop-off Cebu</h2>
+        <div class="form-subtitle">Select your participation role in Metro Cebu</div>
 
-    <p class="auth-switch">Already have an account? <a href="{% url 'login:login' %}">Log in here</a>.</p>
-  </div>
-</section>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="margin-top: 24px;">
+                <button type="submit" class="button primary-green full-width">Complete Registration</button>
+            </div>
+        </form>
+
+        <div class="form-footer">
+            Already have an account? <a href="{% url 'login:login' %}">Back to Login</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
