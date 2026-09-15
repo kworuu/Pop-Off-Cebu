@@ -1,0 +1,45 @@
+/* Profiles feature — avatar header and profile-specific layout. */
+
+.profile-card {
+    max-width: 640px;
+}
+
+.profile-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--color-line-strong);
+    flex: none;
+}
+
+.profile-avatar--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-concrete-dim);
+    color: var(--color-ink-soft);
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.profile-head h1 {
+    margin-bottom: 6px;
+}
+
+.profile-bio {
+    margin-bottom: 20px;
+}
+
+.profile-form {
+    border-top: 1px solid var(--color-line);
+    padding-top: 18px;
+}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Settings | Pop-off Cebu{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/user_settings/user_settings.css' %}">{% endblock %}
+{% block content %}
+<section class="settings-section">
+  <div class="card form-card settings-card">
+    <h1>Settings</h1>
+    <p class="auth-lead">Control how Pop-off Cebu looks and how often it emails you.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <label class="switch-field" for="{{ field.id_for_label }}">
+          <span>
+            <strong>{{ field.label }}</strong>
+            {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
+          </span>
+          {{ field }}
+          <span class="switch-track" aria-hidden="true"></span>
+        </label>
+        {{ field.errors }}
+      {% endfor %}
+      <div class="actions">
+        <button type="submit" class="button">Save settings</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

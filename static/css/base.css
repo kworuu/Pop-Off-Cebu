@@ -1,0 +1,408 @@
+/* =========================================================
+   Pop-off Cebu — shared design tokens & primitives
+   (This is the one file every feature slice is allowed to
+   depend on — typography, colour, header/nav, buttons,
+   badges, messages, and generic form fields. Anything
+   page-specific belongs in that feature's own stylesheet.)
+   ========================================================= */
+
+:root {
+    --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+    --font-body: "Work Sans", Arial, Helvetica, sans-serif;
+
+    --color-concrete: #efece5;
+    --color-concrete-dim: #e4e0d5;
+    --color-paper: #fffdf9;
+    --color-ink: #201f1b;
+    --color-ink-soft: #59564d;
+    --color-line: #d9d3c3;
+    --color-line-strong: #b7ae98;
+
+    --color-teal: #0e6e63;
+    --color-teal-dark: #0a544c;
+    --color-orange: #d9611e;
+    --color-orange-dark: #b04c17;
+    --color-red: #b23a2e;
+    --color-red-dark: #8c2e24;
+    --color-indigo: #4a3f8c;
+    --color-indigo-dark: #392f6d;
+
+    --radius: 4px;
+    --shadow-stamp: 5px 5px 0 rgba(32, 31, 27, 0.10);
+
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    background: var(--color-concrete);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.05;
+    margin: 0 0 12px;
+}
+
+h1 { font-size: clamp(32px, 4.4vw, 48px); }
+h2 { font-size: 26px; }
+h3 { font-size: 19px; margin-bottom: 6px; }
+
+p {
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    margin: 0 0 14px;
+}
+
+a {
+    color: var(--color-teal-dark);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* ---------- layout shell ---------- */
+
+.container {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+}
+
+.site-header {
+    background: var(--color-ink);
+    color: #f4f2ec;
+    border-bottom: 3px solid var(--color-orange);
+}
+
+.nav {
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.nav a {
+    color: inherit;
+}
+
+.nav-links > a {
+    color: #d8d4c8;
+    font-size: 15px;
+}
+
+.nav-links > a:hover {
+    color: #fff;
+}
+
+.nav-user {
+    color: #d8d4c8;
+    font-size: 14px;
+}
+
+.brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    color: #fff;
+    letter-spacing: 0.01em;
+}
+
+.brand:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.logout-form {
+    display: inline;
+}
+
+main {
+    padding: 40px 0 72px;
+}
+
+/* ---------- buttons ---------- */
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 18px 0 6px;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-teal);
+    border-radius: var(--radius);
+    padding: 11px 20px;
+    background: var(--color-teal);
+    color: #fff;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14.5px;
+    line-height: 1;
+}
+
+.button:hover {
+    text-decoration: none;
+    background: var(--color-teal-dark);
+    border-color: var(--color-teal-dark);
+}
+
+.button.secondary {
+    background: transparent;
+    color: inherit;
+    border: 1px solid currentColor;
+}
+
+.button.secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+main .button.secondary:hover {
+    background: rgba(32, 31, 27, 0.06);
+}
+
+/* ---------- generic cards ---------- */
+
+.card {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-stamp);
+}
+
+.link-card {
+    display: block;
+    color: inherit;
+}
+
+.link-card:hover {
+    text-decoration: none;
+    border-color: var(--color-teal);
+}
+
+.tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    background: var(--color-concrete-dim);
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    padding: 3px 9px;
+}
+
+.tag-link {
+    color: var(--color-teal-dark);
+    background: rgba(14, 110, 99, 0.08);
+    border-color: rgba(14, 110, 99, 0.35);
+}
+
+/* ---------- badges (role identity — used on home, profile, nav) ---------- */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+}
+
+.badge.role-organizer {
+    color: var(--color-ink);
+    background: rgba(32, 31, 27, 0.07);
+    border-color: rgba(32, 31, 27, 0.35);
+}
+
+.badge.role-vendor {
+    color: var(--color-orange-dark);
+    background: rgba(217, 97, 30, 0.10);
+    border-color: rgba(217, 97, 30, 0.4);
+}
+
+.badge.role-performer {
+    color: var(--color-indigo);
+    background: rgba(74, 63, 140, 0.10);
+    border-color: rgba(74, 63, 140, 0.4);
+}
+
+.badge.role-attendee {
+    color: var(--color-teal-dark);
+    background: rgba(14, 110, 99, 0.10);
+    border-color: rgba(14, 110, 99, 0.4);
+}
+
+/* ---------- form primitives (shared: login, register, profiles, user_settings) ---------- */
+
+.form-card {
+    max-width: 680px;
+}
+
+.field {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 11px 12px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--color-ink);
+}
+
+.field select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-ink-soft) 50%),
+        linear-gradient(135deg, var(--color-ink-soft) 50%, transparent 50%);
+    background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 36px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 3px rgba(14, 110, 99, 0.18);
+}
+
+.field .helptext {
+    font-size: 12.5px;
+    color: var(--color-ink-soft);
+    margin: 0;
+}
+
+.field .errorlist,
+.form-alert .errorlist {
+    list-style: none;
+    margin: 2px 0 0;
+    padding: 0;
+    color: var(--color-red-dark);
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.form-alert {
+    background: rgba(178, 58, 46, 0.08);
+    border: 1px solid rgba(178, 58, 46, 0.35);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-bottom: 18px;
+}
+
+.form-alert .errorlist {
+    margin: 0;
+}
+
+/* ---------- messages ---------- */
+
+.message {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-line);
+    background: var(--color-concrete-dim);
+    margin-bottom: 20px;
+    font-size: 14.5px;
+}
+
+.message.success {
+    background: rgba(14, 110, 99, 0.10);
+    border-color: rgba(14, 110, 99, 0.4);
+    color: var(--color-teal-dark);
+}
+
+.message.error {
+    background: rgba(178, 58, 46, 0.10);
+    border-color: rgba(178, 58, 46, 0.4);
+    color: var(--color-red-dark);
+}
+
+.message.warning {
+    background: rgba(217, 97, 30, 0.10);
+    border-color: rgba(217, 97, 30, 0.4);
+    color: var(--color-orange-dark);
+}
+
+.message.info,
+.message.debug {
+    background: var(--color-concrete-dim);
+    border-color: var(--color-line);
+    color: var(--color-ink-soft);
+}
+
+/* ---------- responsive base ---------- */
+
+@media (max-width: 560px) {
+    .nav {
+        justify-content: flex-start;
+    }
+
+    .card {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}

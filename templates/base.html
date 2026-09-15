@@ -5,41 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Pop-off Cebu{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header class="site-header">
         <div class="container nav">
-            <a class="brand" href="{% url 'home' %}">
-                POP-OFF <span>CEBU</span>
-                <span class="badge-city">EST. CEBU</span>
-            </a>
-            <div class="nav-links">
-                <a href="{% url 'home' %}">Home</a>
+            <a class="brand" href="{% url 'home:home' %}">Pop-off Cebu</a>
+            <nav class="nav-links">
+                <a href="{% url 'home:home' %}">Home</a>
                 {% if user.is_authenticated %}
-                    <span class="role-badge {{ user.role|lower }}">{{ user.get_role_display }}</span>
-                    <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600;">{{ user.username }}</span>
-                    <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+                    <a href="{% url 'profiles:profile' %}">Profile</a>
+                    <a href="{% url 'user_settings:settings' %}">Settings</a>
+                    <span class="nav-user">{{ user.username }}</span>
+                    <form method="post" action="{% url 'login:logout' %}" class="logout-form">
                         {% csrf_token %}
-                        <button type="submit" class="button secondary" style="padding: 4px 10px; font-size: 12px;">Logout</button>
+                        <button type="submit" class="button secondary">Log out</button>
                     </form>
                 {% else %}
-                    <a href="{% url 'accounts:login' %}">Login</a>
-                    <a href="{% url 'accounts:register' %}" class="button primary-green" style="padding: 6px 14px; font-size: 13px;">Sign Up</a>
+                    <a href="{% url 'login:login' %}">Log in</a>
+                    <a href="{% url 'register:register' %}" class="button">Register</a>
                 {% endif %}
-            </div>
+            </nav>
         </div>
     </header>
-
-    <main class="container" style="padding: 30px 0 60px;">
+    <main class="container">
         {% if messages %}
             {% for message in messages %}
-                <div class="message {{ message.tags }}">
-                    {{ message }}
-                </div>
+                <div class="message {{ message.tags }}">{{ message }}</div>
             {% endfor %}
         {% endif %}
-
         {% block content %}{% endblock %}
     </main>
 </body>

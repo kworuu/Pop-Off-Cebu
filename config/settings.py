@@ -42,9 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # local apps
-    'accounts',
-    'core',
+    # Vertical Feature Slices & Shared Models
+    'apps.accounts',
+    'apps.login',
+    'apps.register',
+    'apps.home',
+    'apps.profiles',
+    'apps.user_settings',
 ]
 
 MIDDLEWARE = [
@@ -130,9 +134,9 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 AUTH_USER_MODEL = "accounts.User"
 
 # Auth Redirects
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "accounts:login"
-LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "home:home"
+LOGOUT_REDIRECT_URL = "login:login"
+LOGIN_URL = "login:login"
 
 
 # Default primary key field type
