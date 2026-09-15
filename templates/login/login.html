@@ -3,10 +3,6 @@
 
 {% block title %}Login | Pop-off Cebu{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/login/login.css' %}">
-{% endblock %}
-
 {% block content %}
 <div class="window-card form-window">
     <div class="window-header">
@@ -23,7 +19,19 @@
 
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            <div style="margin-bottom: 14px;">
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" class="form-input" required autofocus>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label for="login-password">Password</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="password" name="password" id="login-password" class="form-input" required>
+                    <button type="button" class="button secondary btn-pwd-toggle" style="padding: 0 12px; font-size: 11px;">SHOW</button>
+                </div>
+            </div>
+
             <div style="margin-top: 24px;">
                 <button type="submit" class="button primary-green full-width">Sign In</button>
             </div>
@@ -34,4 +42,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/login.js' %}"></script>
 {% endblock %}

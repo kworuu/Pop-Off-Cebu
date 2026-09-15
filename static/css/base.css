@@ -375,3 +375,20 @@ a:hover {
     .grid.three { grid-template-columns: 1fr; }
     .hero h1 { font-size: 36px; }
 }
+
+.chip {
+    padding: 6px 14px;
+    border: 2px solid var(--border-ink);
+    background: #fff;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--border-ink);
+    transition: all 0.1s ease;
+}
+.chip.active {
+    background: var(--border-ink);
+    color: #fff;
+}

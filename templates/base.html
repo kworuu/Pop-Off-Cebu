@@ -16,7 +16,7 @@
                 <span class="badge-city">EST. CEBU</span>
             </a>
             <div class="nav-links">
-                <a href="{% url 'home:home' %}">Home</a>
+                <a href="{% url 'home:home' %}">Discovery</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'profiles:profile' %}">Profile</a>
                     <a href="{% url 'user_settings:settings' %}">Settings</a>
@@ -36,14 +36,32 @@
 
     <main class="container" style="padding: 30px 0 60px;">
         {% if messages %}
-            {% for message in messages %}
-                <div class="message {{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
+            <div id="toast-container">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }} toast-item">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
 
         {% block content %}{% endblock %}
     </main>
+
+    <!-- Global Toast Auto-Dismissal JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const toasts = document.querySelectorAll(".toast-item");
+            toasts.forEach((toast) => {
+                setTimeout(() => {
+                    toast.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+                    toast.style.opacity = "0";
+                    toast.style.transform = "translateY(-8px)";
+                    setTimeout(() => toast.remove(), 400);
+                }, 3500);
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

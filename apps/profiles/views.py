@@ -1,22 +1,21 @@
-from django.contrib import messages
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
-
-from .forms import ProfileForm
-from .models import Profile
-
 
 @login_required
 def profile_view(request):
-    profile, _created = Profile.objects.get_or_create(user=request.user)
+    profile = request.user.profile
+    role = request.user.role
 
-    if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your profile has been updated.")
-            return redirect("profiles:profile")
-    else:
-        form = ProfileForm(instance=profile)
+    # Dynamic metrics per Pop-off Cebu user type
+    stats_map = {
+        "ORGANIZER": {"label": "Events Hosted", "value": 3},
+        "VENDOR": {"label": "Active Stalls", "value": 8},
+        "PERFORMER": {"label": "Gigs Booked", "value": 12},
+        "ATTENDEE": {"label": "Bookmarked Bazaars", "value": 5},
+    }
+    stat = stats_map.get(role, {"label": "Platform Activities", "value": 0})
 
-    return render(request, "profiles/profile.html", {"form": form, "profile": profile})
+    return render(request, "profiles/profile.html", {
+        "profile": profile,
+        "stat": stat,
+    })
