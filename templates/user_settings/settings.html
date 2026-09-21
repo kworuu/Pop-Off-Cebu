@@ -1,30 +1,88 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Settings | Pop-off Cebu{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/user_settings/user_settings.css' %}">{% endblock %}
-{% block content %}
-<section class="settings-section">
-  <div class="card form-card settings-card">
-    <h1>Settings</h1>
-    <p class="auth-lead">Control how Pop-off Cebu looks and how often it emails you.</p>
 
-    <form method="post">
-      {% csrf_token %}
-      {% for field in form %}
-        <label class="switch-field" for="{{ field.id_for_label }}">
-          <span>
-            <strong>{{ field.label }}</strong>
-            {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
-          </span>
-          {{ field }}
-          <span class="switch-track" aria-hidden="true"></span>
-        </label>
-        {{ field.errors }}
-      {% endfor %}
-      <div class="actions">
-        <button type="submit" class="button">Save settings</button>
-      </div>
-    </form>
-  </div>
-</section>
+{% block title %}Settings | Pop-off Cebu{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 280px 1fr; gap: 24px; max-width: 960px; margin: 30px auto;">
+    
+    <!-- Interactive Live Preview Card -->
+    <div class="window-card" style="height: fit-content;">
+        <div class="window-header"><span>LIVE_PREVIEW</span></div>
+        <div class="window-body" style="text-align: center;">
+            <div style="width: 54px; height: 54px; border-radius: 4px; border: 2px solid var(--border-ink); background: var(--green-utb); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; margin: 0 auto 12px; box-shadow: var(--shadow-retro);">
+                {{ user.username|slice:":2"|upper }}
+            </div>
+            <h3 style="margin: 0 0 4px;">{{ user.username }}</h3>
+            <div id="preview-stage" style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                {% if user.profile.business_or_stage_name %}★ {{ user.profile.business_or_stage_name }}{% else %}No Stage Name{% endif %}
+            </div>
+            <span class="role-badge {{ user.role|lower }}">{{ user.get_role_display }}</span>
+            <div id="preview-district" style="font-family: var(--font-mono); font-size: 11px; margin-top: 10px; font-weight: bold;">
+                {{ user.profile.get_district_display|default:"Cebu City" }}
+            </div>
+            <p id="preview-bio" style="font-size: 12px; color: var(--text-muted); margin-top: 10px; font-style: italic;">
+                {{ user.profile.bio|default:"No bio entered yet." }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Tabbed Settings Card -->
+    <div class="window-card">
+        <div class="window-header">
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="settings-tab-btn" data-tab="tab-account" style="padding: 4px 10px; border: 1px solid var(--border-ink); cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: bold; background: var(--mustard-pop);">ACCOUNT</button>
+                <button type="button" class="settings-tab-btn" data-tab="tab-security" style="padding: 4px 10px; border: 1px solid var(--border-ink); cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: bold; background: var(--paper-card);">SECURITY</button>
+                <button type="button" class="settings-tab-btn" data-tab="tab-preferences" style="padding: 4px 10px; border: 1px solid var(--border-ink); cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: bold; background: var(--paper-card);">PREFERENCES</button>
+            </div>
+        </div>
+
+        <div class="window-body">
+            <!-- Tab 1: Account -->
+            <div class="settings-tab-pane" id="tab-account">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="profile">
+                    {{ profile_form.as_p }}
+                    <button type="submit" class="button primary-green" style="margin-top: 12px;">Save Profile Changes</button>
+                </form>
+            </div>
+
+            <!-- Tab 2: Security -->
+            <div class="settings-tab-pane" id="tab-security" style="display: none;">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="security">
+                    {{ pwd_form.as_p }}
+                    <button type="submit" class="button primary-green" style="margin-top: 12px;">Update Password</button>
+                </form>
+            </div>
+
+            <!-- Tab 3: Preferences -->
+            <div class="settings-tab-pane" id="tab-preferences" style="display: none;">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="preferences">
+                    <div style="margin-bottom: 14px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px;">
+                            <input type="checkbox" name="email_notifications" {% if user_settings.email_notifications %}checked{% endif %}>
+                            Receive Email Notifications for Matching Gigs & Bazaars
+                        </label>
+                    </div>
+                    <div style="margin-bottom: 18px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px;">
+                            <input type="checkbox" name="public_profile" {% if user_settings.public_profile %}checked{% endif %}>
+                            Display Profile in the Public Metro Cebu Directory
+                        </label>
+                    </div>
+                    <button type="submit" class="button primary-green">Save Preferences</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/settings.js' %}"></script>
 {% endblock %}

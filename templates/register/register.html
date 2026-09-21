@@ -3,10 +3,6 @@
 
 {% block title %}Register | Pop-off Cebu{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/register/register.css' %}">
-{% endblock %}
-
 {% block content %}
 <div class="window-card form-window">
     <div class="window-header">
@@ -21,9 +17,47 @@
         <h2>Join Pop-off Cebu</h2>
         <div class="form-subtitle">Select your participation role in Metro Cebu</div>
 
-        <form method="post">
+        <form method="post" id="registration-form" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
+            
+            <div style="margin-bottom: 14px;">
+                <label for="reg-username">Username</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label for="reg-email">Email Address</label>
+                {{ form.email }}
+                <div id="email-validation-msg" style="font-family: var(--font-mono); font-size: 11px; margin-top: 4px;"></div>
+                {{ form.email.errors }}
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label for="reg-role">Platform Role</label>
+                {{ form.role }}
+                {{ form.role.errors }}
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label for="reg-password">Password</label>
+                <div style="display: flex; gap: 8px;">
+                    {{ form.password }}
+                    <button type="button" class="button secondary btn-pwd-toggle" data-target="reg-password" style="padding: 0 12px; font-size: 11px;">SHOW</button>
+                </div>
+                {{ form.password.errors }}
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label for="reg-confirm-password">Confirm Password</label>
+                <div style="display: flex; gap: 8px;">
+                    {{ form.confirm_password }}
+                    <button type="button" class="button secondary btn-pwd-toggle" data-target="reg-confirm-password" style="padding: 0 12px; font-size: 11px;">SHOW</button>
+                </div>
+                <div id="password-match-msg" style="font-family: var(--font-mono); font-size: 11px; margin-top: 4px;"></div>
+                {{ form.confirm_password.errors }}
+            </div>
+
             <div style="margin-top: 24px;">
                 <button type="submit" class="button primary-green full-width">Complete Registration</button>
             </div>
@@ -34,4 +68,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock %}

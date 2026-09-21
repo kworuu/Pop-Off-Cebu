@@ -3,15 +3,20 @@
 
 {% block title %}Home | Pop-off Cebu{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/home/home.css' %}">
-{% endblock %}
-
 {% block content %}
 <section class="hero">
     <div class="hero-stamp">METRO CEBU POP-UP ENGINE</div>
-    <h1>HOME <span>SCREEN</span></h1>
+    <h1>LOCAL CULTURE. <span>POP-UP MARKETS.</span></h1>
     <p>Centralizing local artisan markets, food bazaars, and community gigs across Metro Cebu. Connecting organizers, indie vendors, gig performers, and attendees.</p>
+
+    <!-- Interactive Discovery Filter Chips -->
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 28px;">
+        <span class="chip active" data-zone="all">All Metro Cebu</span>
+        <span class="chip" data-zone="it-park">IT Park Maker Fair</span>
+        <span class="chip" data-zone="baseline">Baseline Weekend Market</span>
+        <span class="chip" data-zone="srp">Cebu SRP Pop-ups</span>
+        <span class="chip" data-zone="mandaue">Mandaue Artisans Alley</span>
+    </div>
 
     {% if user.is_authenticated %}
         <div class="window-card" style="max-width: 600px; margin-bottom: 30px;">
@@ -29,7 +34,18 @@
                 <p style="margin: 0 0 16px; font-size: 14px; color: var(--text-muted);">
                     You are verified in the directory as an active <strong>{{ user.get_role_display }}</strong>.
                 </p>
-                <span class="role-badge {{ user.role|lower }}">{{ user.role }} DASHBOARD ACCESS</span>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <span class="role-badge {{ user.role|lower }}">{{ user.role }} ACCESS</span>
+                    {% if user.role == 'ORGANIZER' %}
+                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Host Pop-up Event (LGU Permits)</a>
+                    {% elif user.role == 'VENDOR' %}
+                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Reserve Merchant Stall</a>
+                    {% elif user.role == 'PERFORMER' %}
+                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Browse Live Gig Openings</a>
+                    {% else %}
+                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Explore Weekend Directory</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     {% else %}
@@ -41,12 +57,7 @@
 
     <div class="grid three">
         <div class="window-card">
-            <div class="window-header">
-                <span>01 // DISCOVERY</span>
-                <div class="window-controls">
-                    <span class="window-dot"></span>
-                </div>
-            </div>
+            <div class="window-header"><span>01 // DISCOVERY</span></div>
             <div class="window-body">
                 <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Pop-up Hub</h3>
                 <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
@@ -56,12 +67,7 @@
         </div>
 
         <div class="window-card">
-            <div class="window-header">
-                <span>02 // LEGAL ENGINE</span>
-                <div class="window-controls">
-                    <span class="window-dot"></span>
-                </div>
-            </div>
+            <div class="window-header"><span>02 // LEGAL ENGINE</span></div>
             <div class="window-body">
                 <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Permits & Clearances</h3>
                 <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
@@ -71,12 +77,7 @@
         </div>
 
         <div class="window-card">
-            <div class="window-header">
-                <span>03 // GIG BOARDS</span>
-                <div class="window-controls">
-                    <span class="window-dot"></span>
-                </div>
-            </div>
+            <div class="window-header"><span>03 // GIG BOARDS</span></div>
             <div class="window-body">
                 <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Recruitment Portal</h3>
                 <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
@@ -86,4 +87,22 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const chips = document.querySelectorAll(".chip");
+        chips.forEach((chip) => {
+            chip.addEventListener("click", () => {
+                chips.forEach((c) => {
+                    c.style.background = "#fff";
+                    c.style.color = "var(--text-ink)";
+                });
+                chip.style.background = "var(--border-ink)";
+                chip.style.color = "#fff";
+            });
+        });
+    });
+</script>
 {% endblock %}
