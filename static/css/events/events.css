@@ -1,0 +1,136 @@
+/* Events feature. Uses the design tokens defined in css/base.css. */
+
+.page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.page-title {
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    margin: 0 0 8px;
+}
+
+.page-head .page-title { margin: 0; }
+
+.meta-line { margin: 0 0 4px; font-size: 14px; color: var(--text-muted); }
+.meta-line.going { margin-top: 10px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--green-utb); }
+.muted { color: var(--text-muted); margin: 0; }
+.description { margin: 16px 0; max-width: 68ch; }
+
+/* ---- forms ---- */
+.field { margin-bottom: 14px; }
+.field label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+}
+.field input:not([type="checkbox"]),
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #fff;
+    border: 2px solid var(--border-ink);
+    border-radius: 4px;
+    color: var(--text-ink);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--green-utb);
+    box-shadow: 0 0 0 2px rgba(28, 77, 37, 0.2);
+}
+.field .help, .help { display: block; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.field-error { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--rust-accent); margin-top: 4px; }
+.field.has-error input, .field.has-error select, .field.has-error textarea { border-color: var(--rust-accent); }
+.field label.check { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-size: 14px; font-weight: 600; letter-spacing: 0; }
+.field ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px 14px; }
+.field ul label { display: flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-size: 14px; font-weight: 500; letter-spacing: 0; }
+
+.form-window.wide { max-width: 760px; }
+.event-form fieldset { border: 2px dashed var(--border-ink); border-radius: 6px; padding: 14px 16px 4px; margin: 0 0 18px; }
+.event-form legend { font-family: var(--font-mono); font-size: 12px; font-weight: 700; padding: 0 8px; }
+.form-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ---- list ---- */
+.filter-bar { margin-bottom: 24px; }
+.filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0 16px; align-items: end; }
+.filter-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+
+.event-card { margin-bottom: 0; }
+.event-card-title { margin: 0 0 8px; font-size: 19px; line-height: 1.2; }
+.event-card-title a { text-decoration: none; color: var(--text-ink); }
+.event-card-title a:hover { color: var(--green-utb); text-decoration: underline; }
+
+.pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 28px; font-family: var(--font-mono); font-size: 13px; }
+.empty-state h2 { margin: 0 0 8px; font-size: 22px; }
+.empty-state p { margin: 0 0 16px; color: var(--text-muted); }
+
+/* ---- detail ---- */
+.detail-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.detail-side { position: sticky; top: 84px; }
+.rsvp-count { margin: 0 0 14px; font-size: 14px; }
+.field-stack { margin-bottom: 10px; }
+.side-heading { margin: 20px 0 8px; font-size: 15px; }
+.inline-form { margin-top: 18px; padding-top: 16px; border-top: 2px dashed var(--border-ink); }
+
+.itinerary, .permit-list { list-style: none; margin: 0; padding: 0; }
+.itinerary li { display: grid; gap: 2px; padding: 10px 0; border-bottom: 1px solid rgba(28, 33, 24, 0.15); }
+.itinerary li:last-child, .permit-list li:last-child { border-bottom: none; }
+.itinerary .time { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--green-utb); }
+.permit-list li { display: grid; gap: 4px; justify-items: start; padding: 10px 0; border-bottom: 1px solid rgba(28, 33, 24, 0.15); }
+
+.announcement { padding: 10px 0; border-bottom: 1px solid rgba(28, 33, 24, 0.15); }
+.announcement p { margin: 6px 0 0; font-size: 14px; }
+
+.notice {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border: 2px solid var(--border-ink);
+    border-radius: 6px;
+    background: #fef3c7;
+    box-shadow: var(--shadow-retro);
+    font-size: 14px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border: 1.5px solid var(--border-ink);
+    border-radius: 4px;
+    background: var(--paper-bg);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+}
+.status-published { background: #d1fae5; color: var(--badge-vendor); }
+.status-draft { background: #fef3c7; color: var(--badge-performer); }
+.status-cancelled { background: #fee2e2; color: var(--badge-organizer); }
+
+/* ---- table ---- */
+.scroll-x { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th { text-align: left; font-family: var(--font-mono); font-size: 12px; padding: 8px 10px; border-bottom: 2px solid var(--border-ink); }
+.table td { padding: 10px; border-bottom: 1px solid rgba(28, 33, 24, 0.15); vertical-align: top; }
+
+/* base.css only styles .message.success; move this rule there when convenient */
+.message.error { background-color: #fee2e2; color: #991b1b; }
+
+@media (max-width: 860px) {
+    .detail-layout { grid-template-columns: 1fr; }
+    .detail-side { position: static; }
+    .page-title { font-size: 26px; }
+}

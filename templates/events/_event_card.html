@@ -1,0 +1,15 @@
+<article class="window-card event-card">
+    <div class="window-header"><span>{{ event.start_at|date:"D j M"|upper }} // {{ event.venue.district.name|upper }}</span>{% include "partials/_window_controls.html" %}</div>
+    <div class="window-body">
+        {% if show_status %}<span class="status-badge status-{{ event.status|lower }}">{{ event.get_status_display|default:event.status }}</span>{% endif %}
+        <h3 class="event-card-title"><a href="{% url 'events:detail' event.slug %}">{{ event.title }}</a></h3>
+        <p class="meta-line">
+            {{ event.start_at|date:"g:i A" }}{% if event.start_at|date:"Y-m-d" == event.end_at|date:"Y-m-d" %} to {{ event.end_at|date:"g:i A" }}{% else %} until {{ event.end_at|date:"M j, g:i A" }}{% endif %}
+        </p>
+        <p class="meta-line">{{ event.venue.name }}</p>
+        <div class="tag-row">
+            {% for c in event.categories.all %}<span class="tag">{{ c.name }}</span>{% endfor %}
+        </div>
+        <p class="meta-line going">{{ event.going_count }} going</p>
+    </div>
+</article>

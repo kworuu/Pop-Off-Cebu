@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if event %}Edit event{% else %}Host an event{% endif %} | Pop-off Cebu{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/events/events.css' %}">{% endblock %}
+
+{% block content %}
+<div class="window-card form-window wide">
+    <div class="window-header"><span>{% if event %}EDIT_EVENT.EXE{% else %}NEW_EVENT.EXE{% endif %}</span>{% include "partials/_window_controls.html" %}</div>
+    <div class="window-body">
+        <h2>{% if event %}Edit {{ event.title }}{% else %}Host a pop-up{% endif %}</h2>
+        {% if not event %}
+            <p class="form-subtitle">New listings are reviewed by an administrator before they go public.</p>
+        {% endif %}
+
+        <form method="post" class="event-form" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="notice">{{ form.non_field_errors }}</div>{% endif %}
+
+            <fieldset>
+                <legend>About the event</legend>
+                {% include "events/_field.html" with field=form.title %}
+                {% include "events/_field.html" with field=form.description %}
+                {% include "events/_field.html" with field=form.categories %}
+            </fieldset>
+
+            <fieldset>
+                <legend>Where</legend>
+                {% include "events/_field.html" with field=form.venue %}
+                <div id="new-venue-fields">
+                    {% include "events/_field.html" with field=form.new_venue_name %}
+                    {% include "events/_field.html" with field=form.new_venue_address %}
+                    {% include "events/_field.html" with field=form.new_venue_barangay %}
+                    {% include "events/_field.html" with field=form.new_venue_district %}
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>When</legend>
+                {% include "events/_field.html" with field=form.start_at %}
+                {% include "events/_field.html" with field=form.end_at %}
+            </fieldset>
+
+            <fieldset>
+                <legend>Scale and activities</legend>
+                <p class="help">These answers decide which permits appear on your checklist.</p>
+                {% include "events/_field.html" with field=form.expected_attendance %}
+                {% include "events/_field.html" with field=form.has_food_stalls %}
+                {% include "events/_field.html" with field=form.involves_road_closure %}
+            </fieldset>
+
+            <fieldset>
+                <legend>Admission</legend>
+                {% include "events/_field.html" with field=form.is_ticketed %}
+                <div id="fee-field">{% include "events/_field.html" with field=form.admission_fee %}</div>
+            </fieldset>
+
+            <div class="form-actions">
+                <button type="submit" class="button primary-green">{% if event %}Save changes{% else %}Submit for review{% endif %}</button>
+                <a href="{% if event %}{% url 'events:detail' event.slug %}{% else %}{% url 'events:mine' %}{% endif %}" class="button secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/event_form.js' %}"></script>{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ event.title }} | Pop-off Cebu{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/events/events.css' %}">{% endblock %}
+
+{% block content %}
+{% if is_owner and event.status != "PUBLISHED" %}
+    <div class="notice">
+        This event is <strong>{{ event.get_status_display|default:event.status }}</strong> and only you can see it.
+        An administrator reviews new listings before they appear in the public directory.
+    </div>
+{% endif %}
+
+<div class="detail-layout">
+    <div class="detail-main">
+        <div class="window-card">
+            <div class="window-header"><span>EVENT_DETAILS</span>{% include "partials/_window_controls.html" %}</div>
+            <div class="window-body">
+                <h1 class="page-title">{{ event.title }}</h1>
+                <p class="meta-line">
+                    {{ event.start_at|date:"l, F j, Y, g:i A" }} to
+                    {% if event.start_at|date:"Y-m-d" == event.end_at|date:"Y-m-d" %}{{ event.end_at|date:"g:i A" }}{% else %}{{ event.end_at|date:"l, F j, g:i A" }}{% endif %}
+                </p>
+                <p class="meta-line">{{ event.venue.name }}, {{ event.venue.address }}, Brgy. {{ event.venue.barangay }}, {{ event.venue.district.name }}</p>
+                <div class="tag-row">
+                    {% for c in categories %}<span class="tag">{{ c.name }}</span>{% endfor %}
+                    {% if event.has_food_stalls %}<span class="tag">Food on site</span>{% endif %}
+                    <span class="tag">{% if event.is_ticketed %}Admission PHP {{ event.admission_fee }}{% else %}Free entry{% endif %}</span>
+                </div>
+                <p class="description">{{ event.description|linebreaksbr }}</p>
+                <p class="meta-line">Hosted by {{ event.organizer.username }}</p>
+            </div>
+        </div>
+
+        <div class="window-card">
+            <div class="window-header"><span>SCHEDULE</span>{% include "partials/_window_controls.html" %}</div>
+            <div class="window-body">
+                {% if itinerary %}
+                    <ul class="itinerary">
+                        {% for item in itinerary %}
+                        <li>
+                            <span class="time">{{ item.start_time|time:"g:i A" }}{% if item.end_time %} to {{ item.end_time|time:"g:i A" }}{% endif %}</span>
+                            <strong>{{ item.title }}</strong>
+                            {% if item.description %}<span class="help">{{ item.description }}</span>{% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="muted">The organizer hasn't posted a schedule yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="window-card">
+            <div class="window-header"><span>ANNOUNCEMENTS</span>{% include "partials/_window_controls.html" %}</div>
+            <div class="window-body">
+                {% for a in announcements %}
+                    <div class="announcement">
+                        <strong>{{ a.subject }}</strong>
+                        <span class="help">{{ a.created_at|date:"M j, g:i A" }}</span>
+                        <p>{{ a.body|linebreaksbr }}</p>
+                    </div>
+                {% empty %}
+                    <p class="muted">No announcements yet. Schedule changes will appear here.</p>
+                {% endfor %}
+
+                {% if is_owner %}
+                <form method="post" action="{% url 'events:announce' event.slug %}" class="inline-form">
+                    {% csrf_token %}
+                    {% for field in announcement_form %}{% include "events/_field.html" %}{% endfor %}
+                    <button type="submit" class="button">Post announcement</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <aside class="detail-side">
+        <div class="window-card">
+            <div class="window-header"><span>RSVP</span>{% include "partials/_window_controls.html" %}</div>
+            <div class="window-body">
+                <p class="rsvp-count"><strong>{{ going_count }}</strong> going, {{ interested_count }} interested</p>
+                {% if is_past %}
+                    <p class="muted">This event has ended.</p>
+                {% elif can_rsvp %}
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'events:rsvp' event.slug %}" class="field-stack">
+                        {% csrf_token %}
+                        <div class="field">
+                            <label for="rsvp-status">Your response</label>
+                            <select name="status" id="rsvp-status">
+                                {% for value, label in rsvp_choices %}
+                                    <option value="{{ value }}" {% if user_rsvp.status == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="rsvp-party">Party size</label>
+                            <input type="number" name="party_size" id="rsvp-party" min="1" max="20" value="{{ user_rsvp.party_size|default:1 }}">
+                        </div>
+                        <button type="submit" class="button primary-green full-width">{% if user_rsvp %}Update RSVP{% else %}RSVP{% endif %}</button>
+                    </form>
+                    {% if user_rsvp %}
+                    <form method="post" action="{% url 'events:rsvp' event.slug %}" class="field-stack">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="cancel">
+                        <button type="submit" class="button secondary full-width">Remove RSVP</button>
+                    </form>
+                    {% endif %}
+                    {% else %}
+                        <a href="{% url 'login:login' %}?next={{ request.path }}" class="button primary-green full-width">Log in to RSVP</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if is_owner %}
+        <div class="window-card">
+            <div class="window-header"><span>ORGANIZER</span>{% include "partials/_window_controls.html" %}</div>
+            <div class="window-body">
+                <a href="{% url 'events:edit' event.slug %}" class="button full-width">Edit event</a>
+                <h3 class="side-heading">Permit checklist</h3>
+                {% if permits %}
+                    <ul class="permit-list">
+                        {% for p in permits %}
+                        <li>
+                            <strong>{{ p.permit_type.name }}</strong>
+                            <span class="help">{{ p.permit_type.issuing_office }}</span>
+                            <span class="status-badge">{{ p.get_status_display|default:p.status }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="muted">No permits apply based on the details you entered.</p>
+                {% endif %}
+                <p class="help">Check requirements with each office before filing. Office rules change.</p>
+            </div>
+        </div>
+        {% endif %}
+    </aside>
+</div>
+{% endblock %}

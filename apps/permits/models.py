@@ -18,6 +18,8 @@ class PermitType(models.Model):
         HAS_FOOD = "HAS_FOOD", "Required when the event has food stalls"
         ROAD_CLOSURE = "ROAD_CLOSURE", "Required when the event closes roads"
         TICKETED = "TICKETED", "Required when the event is ticketed"
+        CROWD_100 = "CROWD_100", "Required for 100+ expected attendees"
+        CROWD_500 = "CROWD_500", "Required for 500+ expected attendees"
 
     code = models.CharField(max_length=30, unique=True)
     name = models.CharField(max_length=120)

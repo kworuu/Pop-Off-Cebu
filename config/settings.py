@@ -96,6 +96,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #    }
 #}
 
+import sys
+
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv("DATABASE_URL"),
@@ -103,6 +105,15 @@ DATABASES = {
         ssl_require=True,
     )
 }
+
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    }
+
 
 
 # Password validation
