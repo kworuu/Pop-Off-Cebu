@@ -19,7 +19,7 @@
             </div>
             <span class="role-badge {{ user.role|lower }}">{{ user.get_role_display }}</span>
             <div id="preview-district" style="font-family: var(--font-mono); font-size: 11px; margin-top: 10px; font-weight: bold;">
-                {{ user.profile.get_district_display|default:"Cebu City" }}
+                {{ user.profile.district.name }}
             </div>
             <p id="preview-bio" style="font-size: 12px; color: var(--text-muted); margin-top: 10px; font-style: italic;">
                 {{ user.profile.bio|default:"No bio entered yet." }}

@@ -39,7 +39,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                 <div>
                     <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; display: block;">District / Location</label>
-                    <strong>{{ profile.get_district_display|default:"Cebu City" }}</strong>
+                    <strong>{{ profile.district.name }}</strong>
                 </div>
                 <div>
                     <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; display: block;">Contact Number</label>

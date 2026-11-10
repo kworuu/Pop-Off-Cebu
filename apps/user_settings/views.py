@@ -11,17 +11,20 @@ def settings_view(request):
     user = request.user
     profile = user.profile
     settings_obj, _ = UserSettings.objects.get_or_create(user=user)
+    profile_form = None
+    pwd_form = None
 
     if request.method == "POST":
         action = request.POST.get("action")
 
         if action == "profile":
-            form = ProfileForm(request.POST, request.FILES, instance=profile)
-            if form.is_valid():
-                form.save()
+            profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+            if profile_form.is_valid():
+                profile_form.save()
                 messages.success(request, "Profile details updated successfully.")
                 return redirect("user_settings:settings")
-        
+            messages.error(request, "Please fix the profile errors below.")
+
         elif action == "security":
             pwd_form = PasswordChangeForm(user, request.POST)
             if pwd_form.is_valid():
@@ -29,8 +32,7 @@ def settings_view(request):
                 update_session_auth_hash(request, updated_user)
                 messages.success(request, "Password updated successfully.")
                 return redirect("user_settings:settings")
-            else:
-                messages.error(request, "Please fix the password errors below.")
+            messages.error(request, "Please fix the password errors below.")
 
         elif action == "preferences":
             settings_obj.email_notifications = request.POST.get("email_notifications") == "on"
@@ -39,8 +41,10 @@ def settings_view(request):
             messages.success(request, "Preferences saved.")
             return redirect("user_settings:settings")
 
-    profile_form = ProfileForm(instance=profile)
-    pwd_form = PasswordChangeForm(user)
+    if profile_form is None:
+        profile_form = ProfileForm(instance=profile)
+    if pwd_form is None:
+        pwd_form = PasswordChangeForm(user)
 
     return render(request, "user_settings/settings.html", {
         "profile_form": profile_form,
