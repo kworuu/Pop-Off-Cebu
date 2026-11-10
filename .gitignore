@@ -3,5 +3,12 @@
 __pycache__/
 *.pyc
 .env
+<<<<<<< HEAD
 BASELINE_COMMIT.txt
 media/
+=======
+
+venv/
+.agent/
+.gemini/
+>>>>>>> origin/main

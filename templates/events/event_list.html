@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Events | Pop-off Cebu{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/events/events.css' %}">{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <h1 class="page-title">Find a pop-up in Metro Cebu</h1>
+    {% if user.is_authenticated and user.role == "ORGANIZER" %}
+        <a href="{% url 'events:create' %}" class="button primary-green">Host an event</a>
+    {% endif %}
+</div>
+
+<form method="get" class="window-card filter-bar">
+    <div class="window-header"><span>FILTERS</span>{% include "partials/_window_controls.html" %}</div>
+    <div class="window-body filter-grid">
+        {% for field in form %}{% include "events/_field.html" %}{% endfor %}
+        <div class="filter-actions">
+            <button type="submit" class="button primary-green">Show events</button>
+            {% if filters_active %}<a href="{% url 'events:list' %}" class="button secondary">Clear filters</a>{% endif %}
+        </div>
+    </div>
+</form>
+
+{% if page.object_list %}
+    <div class="grid three">
+        {% for event in page.object_list %}{% include "events/_event_card.html" %}{% endfor %}
+    </div>
+
+    {% if page.has_other_pages %}
+    <nav class="pager" aria-label="Pages">
+        {% if page.has_previous %}
+            <a class="button secondary" href="?{% if querystring %}{{ querystring }}&{% endif %}page={{ page.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+        {% if page.has_next %}
+            <a class="button secondary" href="?{% if querystring %}{{ querystring }}&{% endif %}page={{ page.next_page_number }}">Next</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+{% else %}
+    <div class="window-card">
+        <div class="window-body empty-state">
+            <h2>No events match these filters</h2>
+            <p>Try a wider date range or a different district, or clear the filters to see everything upcoming.</p>
+            {% if filters_active %}<a href="{% url 'events:list' %}" class="button secondary">Clear filters</a>{% endif %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,148 @@
+/* Window-frame identity. Load after base.css (see base.html).
+   Overrides only; tokens come from base.css. */
+
+/* Themed browser surfaces (craft floor: style unrendered defaults) */
+::selection {
+    background-color: var(--mustard-pop);
+    color: var(--border-ink);
+}
+
+:focus-visible {
+    outline: 2px solid var(--border-ink);
+    outline-offset: 2px;
+}
+
+/* Card & Window Frame Refinements */
+.window-card {
+    border-radius: 0;
+    box-shadow: 4px 4px 0 var(--border-ink);
+}
+
+.window-card--flush {
+    margin-bottom: 0 !important;
+}
+
+.window-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.window-dot {
+    cursor: default;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.window-card:hover .window-dot {
+    filter: brightness(1.08);
+}
+
+.window-dot:hover {
+    transform: scale(1.15);
+}
+
+/* Color Surface Inversion */
+.window-card.on-green > .window-body {
+    background: var(--green-utb);
+    color: #fff;
+}
+
+/* Craft floor: never gray on colored surfaces; tint from white */
+.window-card.on-green .muted,
+.window-card.on-green p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.window-card.on-green .win-foot {
+    border-top-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Shared UI Atoms */
+.tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-row--spaced {
+    margin-bottom: 18px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border: 1.5px solid currentColor;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--border-ink);
+    background: var(--paper-card);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Layout Utilities (replacing template inline styles) */
+.site-main {
+    padding: 30px 0 64px;
+}
+
+.going-count {
+    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+.win-foot--flush {
+    margin-top: 0 !important;
+}
+
+.text-green {
+    color: var(--green-utb);
+}
+
+.section-title--lead {
+    margin: 10px 0 32px;
+    max-width: 700px;
+}
+
+.nav-username {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.nav-logout-form {
+    display: inline;
+}
+
+.button-sm {
+    padding: 5px 12px;
+    font-size: 12px;
+}
+
+/* Equal-height lanes */
+.lane-grid .window-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.lane-grid .window-body {
+    flex: 1;
+}
+
+/* Messages */
+.message.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
