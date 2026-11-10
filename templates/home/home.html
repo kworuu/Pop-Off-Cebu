@@ -1,108 +1,122 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Home | Pop-off Cebu{% endblock %}
+{% block title %}Pop-off Cebu | Sama ta sa pop-up{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/home/home.css' %}">{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="hero-stamp">METRO CEBU POP-UP ENGINE</div>
-    <h1>LOCAL CULTURE. <span>POP-UP MARKETS.</span></h1>
-    <p>Centralizing local artisan markets, food bazaars, and community gigs across Metro Cebu. Connecting organizers, indie vendors, gig performers, and attendees.</p>
-
-    <!-- Interactive Discovery Filter Chips -->
-    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 28px;">
-        <span class="chip active" data-zone="all">All Metro Cebu</span>
-        <span class="chip" data-zone="it-park">IT Park Maker Fair</span>
-        <span class="chip" data-zone="baseline">Baseline Weekend Market</span>
-        <span class="chip" data-zone="srp">Cebu SRP Pop-ups</span>
-        <span class="chip" data-zone="mandaue">Mandaue Artisans Alley</span>
+<section class="fiesta-hero">
+    <div>
+        <div class="hero-stamp">METRO CEBU POP-UP ENGINE</div>
+        <h1 class="fiesta-title">Sama ta sa <span>pop-up.</span></h1>
+        <p class="fiesta-lede">Weekend markets, food bazaars and live gigs across Metro Cebu. Sell your craft, play a set, host the block party, or just show up hungry.</p>
+        <div class="cta-row">
+            <a href="{% url 'events:list' %}" class="button primary-green">Find a pop-up</a>
+            {% if secondary_cta %}<a href="{{ secondary_cta.url }}" class="button secondary">{{ secondary_cta.label }}</a>{% endif %}
+        </div>
     </div>
 
-    {% if user.is_authenticated %}
-        <div class="window-card" style="max-width: 600px; margin-bottom: 30px;">
-            <div class="window-header">
-                <span>SESSION_ACTIVE.EXE</span>
-                <div class="window-controls">
-                    <span class="window-dot"></span>
-                    <span class="window-dot"></span>
-                    <span class="window-dot close"></span>
+    <div class="window-card window-card--flush">
+        <div class="window-header"><span>NEXT_UP.EXE</span>{% include "partials/_window_controls.html" %}</div>
+        <div class="window-body window-stack">
+            {% if next_up %}
+                <span class="mono-label muted">{{ next_up.start_at|date:"D j M, g:i A" }} // {{ next_up.venue.district.name }}</span>
+                <h2 class="next-up-title"><a href="{% url 'events:detail' next_up.slug %}">{{ next_up.title }}</a></h2>
+                <p class="muted">{{ next_up.venue.name }}. {% if next_up.is_ticketed %}PHP {{ next_up.admission_fee }}{% else %}Free entry{% endif %}.</p>
+                <div class="win-foot">
+                    <span class="going-count">{{ next_up.going_count }} going</span>
+                    <a href="{% url 'events:detail' next_up.slug %}" class="button primary-green">Sama ko!</a>
                 </div>
-            </div>
-            <div class="window-body">
-                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">USER PROFILE DETECTED</div>
-                <h2 style="margin: 0 0 8px; font-size: 22px;">Maayong Pag-abot, {{ user.username }}!</h2>
-                <p style="margin: 0 0 16px; font-size: 14px; color: var(--text-muted);">
-                    You are verified in the directory as an active <strong>{{ user.get_role_display }}</strong>.
-                </p>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <span class="role-badge {{ user.role|lower }}">{{ user.role }} ACCESS</span>
-                    {% if user.role == 'ORGANIZER' %}
-                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Host Pop-up Event (LGU Permits)</a>
-                    {% elif user.role == 'VENDOR' %}
-                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Reserve Merchant Stall</a>
-                    {% elif user.role == 'PERFORMER' %}
-                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Browse Live Gig Openings</a>
-                    {% else %}
-                        <a href="{% url 'profiles:profile' %}" class="button primary-green" style="font-size: 12px; padding: 4px 12px;">Explore Weekend Directory</a>
-                    {% endif %}
+            {% else %}
+                <h2 class="next-up-title">No pop-ups are scheduled yet</h2>
+                <p class="muted">Be the first. Organizers can list an event and get a permit checklist in a few minutes.</p>
+                <div class="win-foot">
+                    <a href="{% if user.is_authenticated and user.role == 'ORGANIZER' %}{% url 'events:create' %}{% else %}{% url 'register:register' %}{% endif %}" class="button primary-green">{% if user.is_authenticated and user.role == 'ORGANIZER' %}Host an event{% else %}Join the community{% endif %}</a>
                 </div>
-            </div>
-        </div>
-    {% else %}
-        <div style="margin-bottom: 36px; display: flex; gap: 14px;">
-            <a href="{% url 'register:register' %}" class="button primary-green">Register Account</a>
-            <a href="{% url 'login:login' %}" class="button secondary">Existing User Login</a>
-        </div>
-    {% endif %}
-
-    <div class="grid three">
-        <div class="window-card">
-            <div class="window-header"><span>01 // DISCOVERY</span></div>
-            <div class="window-body">
-                <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Pop-up Hub</h3>
-                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
-                    Explore verified weekend bazaars, IT Park maker pop-ups, and indie gigs across Cebu.
-                </p>
-            </div>
-        </div>
-
-        <div class="window-card">
-            <div class="window-header"><span>02 // LEGAL ENGINE</span></div>
-            <div class="window-body">
-                <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Permits & Clearances</h3>
-                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
-                    Interactive compliance roadmaps for Barangay, CCTO traffic, and City Health sanitary permits.
-                </p>
-            </div>
-        </div>
-
-        <div class="window-card">
-            <div class="window-header"><span>03 // GIG BOARDS</span></div>
-            <div class="window-body">
-                <h3 style="margin: 0 0 8px; font-size: 18px; text-transform: uppercase;">Recruitment Portal</h3>
-                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">
-                    Direct slot reservations for craft vendors, acoustic acts, DJs, setup crew, and media shooters.
-                </p>
-            </div>
+            {% endif %}
         </div>
     </div>
 </section>
-{% endblock %}
 
-{% block extra_js %}
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const chips = document.querySelectorAll(".chip");
-        chips.forEach((chip) => {
-            chip.addEventListener("click", () => {
-                chips.forEach((c) => {
-                    c.style.background = "#fff";
-                    c.style.color = "var(--text-ink)";
-                });
-                chip.style.background = "var(--border-ink)";
-                chip.style.color = "#fff";
-            });
-        });
-    });
-</script>
+{% if coming %}
+<section class="fiesta-section">
+    <div class="section-head">
+        <h2 class="section-title">Coming up</h2>
+        <a href="{% url 'events:list' %}">See all upcoming events &rarr;</a>
+    </div>
+    <div class="bento{% if coming|length == 1 %} solo{% endif %}">
+        {% with f=coming.0 %}
+        <article class="window-card on-green feat">
+            {% include "home/_event_window.html" with e=f %}
+            <div class="window-body">
+                <div>
+                    <h3 class="card-title"><a href="{% url 'events:detail' f.slug %}">{{ f.title }}</a></h3>
+                    <p>{{ f.description|truncatewords:28 }}</p>
+                </div>
+                <div>
+                    <div class="tag-row tag-row--spaced">
+                        {% for c in f.categories.all %}<span class="tag">{{ c.name }}</span>{% endfor %}
+                        <span class="tag">{% if f.is_ticketed %}PHP {{ f.admission_fee }}{% else %}Free entry{% endif %}</span>
+                    </div>
+                    <div class="win-foot win-foot--flush">
+                        <span class="going-count">{{ f.going_count }} going</span>
+                        <a href="{% url 'events:detail' f.slug %}" class="button btn-on-green">Sama ko!</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endwith %}
+        {% for e in coming|slice:"1:" %}
+        <article class="window-card">
+            {% include "home/_event_window.html" %}
+            <div class="window-body">
+                <h3 class="card-title"><a href="{% url 'events:detail' e.slug %}">{{ e.title }}</a></h3>
+                <p class="muted">{{ e.venue.name }}, {{ e.start_at|date:"g:i A" }}</p>
+                <div class="tag-row text-green">
+                    {% for c in e.categories.all %}<span class="tag">{{ c.name }}</span>{% endfor %}
+                </div>
+                <div class="win-foot">
+                    <span class="going-count">{{ e.going_count }} going</span>
+                    <a href="{% url 'events:detail' e.slug %}" class="button secondary">Sama ko!</a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="fiesta-section">
+    <h2 class="section-title section-title--lead">Pick your lane: everyone has a seat at the table.</h2>
+    <div class="lane-grid">
+        {% for lane in lanes %}
+        <article class="window-card">
+            <div class="window-header"><span>{{ lane.num }} // {{ lane.title|upper }}.EXE</span>{% include "partials/_window_controls.html" %}</div>
+            <div class="window-body">
+                <h3>{{ lane.title }}</h3>
+                <p>{{ lane.text }}</p>
+                <a href="{{ lane.url }}" class="button primary-green">{{ lane.cta }}</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="fiesta-band">
+    <div class="band-inner">
+        <div>
+            <h2 class="section-title">Permits shouldn't be why a good market doesn't happen.</h2>
+            <p>Tell us what you're hosting. We build the checklist and show you which office to visit and in what order.</p>
+        </div>
+        <div class="window-card">
+            <div class="window-header"><span>PERMIT_CHECKLIST.EXE</span>{% include "partials/_window_controls.html" %}</div>
+            <ul class="check-list">
+                <li><span class="tick" aria-hidden="true">&#10003;</span>Barangay clearance</li>
+                <li><span class="tick" aria-hidden="true">&#10003;</span>City Health sanitary permit</li>
+                <li><span class="tick" aria-hidden="true">&#10003;</span>CCTO traffic clearance</li>
+                <li><span class="tick" aria-hidden="true">&#10003;</span>Fire safety clearance</li>
+            </ul>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My events | Pop-off Cebu{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/events/events.css' %}">{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <h1 class="page-title">My events</h1>
+    <a href="{% url 'events:create' %}" class="button primary-green">Host an event</a>
+</div>
+
+{% if events %}
+<div class="window-card">
+    <div class="window-header"><span>ORGANIZER_CONSOLE</span>{% include "partials/_window_controls.html" %}</div>
+    <div class="window-body scroll-x">
+        <table class="table">
+            <thead>
+                <tr><th>Event</th><th>When</th><th>Status</th><th>Going</th><th>Permits</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for e in events %}
+                <tr>
+                    <td><a href="{% url 'events:detail' e.slug %}">{{ e.title }}</a><br><span class="help">{{ e.venue.name }}, {{ e.venue.district.name }}</span></td>
+                    <td>{{ e.start_at|date:"M j, Y g:i A" }}</td>
+                    <td><span class="status-badge status-{{ e.status|lower }}">{{ e.get_status_display|default:e.status }}</span></td>
+                    <td>{{ e.going_count }}</td>
+                    <td>{{ e.permit_count }}</td>
+                    <td><a href="{% url 'events:edit' e.slug %}">Edit</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="window-card">
+    <div class="window-body empty-state">
+        <h2>You haven't hosted anything yet</h2>
+        <p>Create an event to get a permit checklist and open it to vendors and performers.</p>
+        <a href="{% url 'events:create' %}" class="button primary-green">Host an event</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
